@@ -2,9 +2,9 @@
 
 <img src="https://capsule-render.vercel.app/api?type=waving&color=0:0f2027,50:203a43,100:2c5364&height=200&section=header&text=⚡%20PyPSA-AT%20Analytics&fontSize=38&fontColor=ffffff&fontAlignY=38&desc=Provenance-Tracked%20ETL%20%2B%20Streamlit%20Dashboard%20for%20Macro-Energy%20Simulations&descAlignY=60&descSize=15" width="100%"/>
 
-[![🚀 Live Demo](https://img.shields.io/badge/Live_Demo-Try_it_now-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white)](https://pypsa-atanalytics.streamlit.app/).
+[![🚀 Live Demo](https://img.shields.io/badge/Live_Demo-Try_it_now-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white)](https://pypsa-atanalytics.streamlit.app/)
 
-[![Open in GitHub](https://img.shields.io/badge/View_on-GitHub-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/AIMLDS7/pypsa-at_analytics/).
+[![Open in GitHub](https://img.shields.io/badge/View_on-GitHub-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/AIMLDS7/pypsa-at_analytics/)
 
 <div align="center">
 
