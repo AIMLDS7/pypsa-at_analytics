@@ -431,6 +431,6 @@ During active development the Parquet store can accumulate stale test runs. `--r
 
 *Model faster. Track everything.*
 
-[![GitHub](https://img.shields.io/badge/GitHub-your--org-181717?style=flat-square&logo=github)](https://github.com/AIMLDS7)
+[![GitHub](https://img.shields.io/badge/GitHub-AIMLDS7-181717?style=flat-square&logo=github)](https://github.com/AIMLDS7)
 
 </div>
