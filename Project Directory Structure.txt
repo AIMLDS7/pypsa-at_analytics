@@ -1,9 +1,0 @@
-pypsa-at-analytics/
-├── results/                     # Solved NetCDF network files (.nc)
-├── data/                        # Compiled Parquet dashboard store
-├── scripts/
-│   ├── extract_runs.py          # Existing: High-speed dashboard ETL extraction
-│   ├── audit_baseline.py        # NEW: Generates baseline capacity share tables
-│   ├── analyze_corridor.py      # NEW: Calculates line loading & congestion duration
-│   └── run_expansion_study.py   # NEW: Co-optimization scenario runner (Lines vs. Local Assets)
-└── app.py                       # Existing: Streamlit interactive workbench
