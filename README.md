@@ -33,10 +33,14 @@
 
 </div>
 
+> [!WARNING]
+> **This repo does not run PyPSA-AT simulations.** It's a downstream analytics layer that only reads *already-solved* `.nc` network files. You need to install and run the actual [AGGM-AG/pypsa-at](https://github.com/AGGM-AG/pypsa-at) model first to produce those files - see [Prerequisite](#-prerequisite-run-pypsa-at-first) below before anything here will work.
+
 ---
 
 ## Table of Contents
 
+- [Prerequisite: Run PyPSA-AT First](#-prerequisite-run-pypsa-at-first)
 - [Overview](#-overview)
 - [Architecture](#-architecture)
 - [Pipeline Components](#-pipeline-components)
@@ -51,7 +55,48 @@
 
 ---
 
+## 🔗 Prerequisite: Run PyPSA-AT First
+
+This platform is a **downstream analytics and provenance layer**. It never runs a power system simulation itself - it only reads the solved `.nc` network files that PyPSA-AT produces. Before anything in this repo is useful, you need to go through the full upstream modeling process:
+
+[![PyPSA-AT](https://img.shields.io/badge/Upstream_Model-AGGM--AG%2Fpypsa--at-1E88E5?style=for-the-badge&logo=github&logoColor=white)](https://github.com/AGGM-AG/pypsa-at)
+
+```
+  1. AGGM-AG/pypsa-at            (separate repo, run this first)
+     - clone, configure, solve
+     - Linux, git + pixi required
+              │
+              │ produces
+              ▼
+     results/*.nc
+              │
+              │ copy into this repo's results/
+              ▼
+  2. pypsa-at_analytics          (this repo, starts here)
+     - archive_run.py
+     - extract_runs.py
+     - Streamlit dashboard
+```
+
+**Step-by-step:**
+
+1. **Clone and set up the actual simulation model** ([AGGM-AG/pypsa-at](https://github.com/AGGM-AG/pypsa-at) - Linux only, requires [git](https://git-scm.com/install) and [pixi](https://pixi.prefix.dev/latest/#installation)):
+   ```bash
+   git clone https://github.com/AGGM-AG/pypsa-at.git && cd pypsa-at
+   pixi run workflow
+   ```
+2. **Configure and solve a scenario** by editing `config/config.at.yaml` (and `config/scenarios.manual.yaml` for scenario variants) in that repo, then re-running the workflow. This is the long-running, compute-heavy part - a full Austrian sector-coupled solve can take a while depending on your hardware.
+3. **Locate the solved output** - the workflow writes solved networks into that repo's own `results/` directory.
+4. **Bring the `.nc` file(s) over to this repo's `results/` folder** (copy or point this project at that path).
+5. **Only now does the rest of this README apply** - checkpoint with `archive_run.py`, ingest with `extract_runs.py`, and explore in the dashboard.
+
+> 💡 If you re-run PyPSA-AT with a different config, it overwrites `results/*.nc` in that repo too - which is exactly the "invisible mutation" problem this analytics layer exists to solve. Checkpoint each run with `archive_run.py` (see below) before moving on to the next PyPSA-AT config change.
+
+---
+
 ## 🔭 Overview
+
+*(Assumes you've already completed the [Prerequisite](#-prerequisite-run-pypsa-at-first) step above and have solved `.nc` files in `results/`.)*
 
 Large-scale PyPSA-AT runs solve into `results/*.nc` - and every re-run with a modified config **overwrites** those files. There is only ever *one* `results/base_s_adm__none_2030.nc` on disk at a time. Without extra bookkeeping, once you overwrite it you lose the ability to say *which config produced which numbers*.
 
@@ -76,6 +121,8 @@ This platform solves that **without ever copying or regenerating `.nc` files**, 
 ---
 
 ## 🏗 Architecture
+
+> The top box below is produced entirely by the separate [AGGM-AG/pypsa-at](https://github.com/AGGM-AG/pypsa-at) repo (see [Prerequisite](#-prerequisite-run-pypsa-at-first)). Everything from `results/*.nc` downward is this repo.
 
 ```
 ┌──────────────────────────────────────────────────────────────────────────┐
@@ -207,6 +254,15 @@ The **Scenario Provenance & Report** tab in `app.py` ties everything together:
 
 ## 🚀 Quick Start
 
+### 0 - Generate your data (separate repo, do this first)
+
+```bash
+git clone https://github.com/AGGM-AG/pypsa-at.git && cd pypsa-at
+pixi run workflow
+```
+
+This is the actual simulation - Linux only, requires `git` + `pixi`, and produces `results/*.nc` in *that* repo. See [Prerequisite](#-prerequisite-run-pypsa-at-first) for the full walkthrough. Copy the resulting `.nc` file(s) into this repo's `results/` folder before continuing.
+
 ### 1 - Clone
 
 ```bash
@@ -278,7 +334,7 @@ python scripts/diff_configs.py --base "baseline_2025.04" --target "high_h2_elect
 │       ├── manifest.yaml               ← created_at, git commit, notes, .nc fingerprints
 │       └── config/                     ← snapshot copy of config/*.yaml at archive time
 │
-├── 📉 results/                          ← Solved NetCDF networks (.nc) - OVERWRITTEN each run
+├── 📉 results/                          ← Solved NetCDF networks (.nc), copied over from AGGM-AG/pypsa-at - OVERWRITTEN each run
 ├── 📊 data/                             ← Durable Parquet dashboard store (append-only)
 │
 ├── 🐍 scripts/
