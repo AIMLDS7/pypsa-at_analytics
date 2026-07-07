@@ -1,12 +1,21 @@
 <div align="center">
 
-<img src="https://capsule-render.vercel.app/api?type=waving&color=0:0f2027,50:203a43,100:2c5364&height=200&section=header&text=⚡%20PyPSA-AT%20Analytics&fontSize=38&fontColor=ffffff&fontAlignY=38&desc=Provenance-Tracked%20ETL%20%2B%20Streamlit%20Dashboard%20for%20Macro-Energy%20Simulations&descAlignY=60&descSize=15" width="100%"/>
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:0f2027,50:203a43,100:2c5364&height=220&section=header&text=⚡%20PyPSA-AT%20Analytics&fontSize=42&fontColor=ffffff&fontAlignY=35&desc=Provenance-Tracked%20ETL%20%2B%20Streamlit%20Dashboard%20for%20Macro-Energy%20Simulations&descAlignY=55&descSize=15&animation=fadeIn" width="100%"/>
+
+[![Typing SVG](https://readme-typing-svg.demolab.com?font=Fira+Code&size=17&pause=1200&color=4FD1FF&center=true&vCenter=true&width=820&height=50&lines=Every+solved+network+%E2%80%94+fingerprinted%2C+checkpointed%2C+never+lost;Append-only+Parquet+lake+%C2%B7+zero+.nc+duplication;8-tab+Streamlit+mission+control+dashboard)](https://git.io/typing-svg)
 
 [![🚀 Live Demo](https://img.shields.io/badge/Live_Demo-Try_it_now-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white)](https://pypsa-atanalytics.streamlit.app/)
-
 [![Open in GitHub](https://img.shields.io/badge/View_on-GitHub-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/AIMLDS7/pypsa-at_analytics/)
 
-<div align="center">
+<sub>
+
+[![Stars](https://img.shields.io/github/stars/AIMLDS7/pypsa-at_analytics?style=for-the-badge&color=FFD700&logo=github&logoColor=white&label=STARS)](https://github.com/AIMLDS7/pypsa-at_analytics/stargazers)
+[![Forks](https://img.shields.io/github/forks/AIMLDS7/pypsa-at_analytics?style=for-the-badge&color=1E88E5&logo=github&logoColor=white&label=FORKS)](https://github.com/AIMLDS7/pypsa-at_analytics/network/members)
+[![Last commit](https://img.shields.io/github/last-commit/AIMLDS7/pypsa-at_analytics?style=for-the-badge&color=22C55E&logo=github&logoColor=white&label=LAST%20COMMIT)](https://github.com/AIMLDS7/pypsa-at_analytics/commits)
+[![Code size](https://img.shields.io/github/languages/code-size/AIMLDS7/pypsa-at_analytics?style=for-the-badge&color=CB171E&label=CODE%20SIZE)](https://github.com/AIMLDS7/pypsa-at_analytics)
+[![License: MIT](https://img.shields.io/badge/LICENSE-MIT-22C55E?style=for-the-badge)](LICENSE)
+
+</sub>
 
 **Built with:**
 
@@ -16,30 +25,27 @@
 [![Pandas](https://img.shields.io/badge/Pandas-150458?style=flat-square&logo=pandas&logoColor=white)](https://pandas.pydata.org/)
 [![Apache Parquet](https://img.shields.io/badge/Apache_Parquet-50ABF1?style=flat-square&logo=apacheparquet&logoColor=white)](https://parquet.apache.org/)
 [![YAML](https://img.shields.io/badge/Config-YAML-CB171E?style=flat-square&logo=yaml&logoColor=white)](https://yaml.org/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-22C55E?style=flat-square)](LICENSE)
 
-</div>
+**Provenance-first energy analytics** — every solved PyPSA-AT network is fingerprinted, checkpointed, and appended to a durable Parquet store, so overwriting `results/*.nc` never means losing the ability to compare scenarios.
 
-**Provenance-first energy analytics** - every solved PyPSA-AT network is fingerprinted, checkpointed, and appended to a durable Parquet store, so overwriting `results/*.nc` never means losing the ability to compare scenarios.
-
-[🏗 Architecture](#-architecture) · [📊 Dashboard](#-dashboard) · [🚀 Quick Start](#-quick-start)
-
-</div>
-
-<div align="center">
-
-[![Stars](https://img.shields.io/github/stars/AIMLDS7/pypsa-at_analytics?style=social)](https://github.com/AIMLDS7/pypsa-at_analytics/stargazers)
-[![Forks](https://img.shields.io/github/forks/AIMLDS7/pypsa-at_analytics?style=social)](https://github.com/AIMLDS7/pypsa-at_analytics/network/members)
-[![Last commit](https://img.shields.io/github/last-commit/AIMLDS7/pypsa-at_analytics)](https://github.com/AIMLDS7/pypsa-at_analytics/commits)
+[🏗 Architecture](#-architecture) · [📊 Dashboard](#-dashboard) · [🚀 Quick Start](#-quick-start) · [📈 Star History](#-star-history)
 
 </div>
 
 > [!WARNING]
 > **This repo does not run PyPSA-AT simulations.** It's a downstream analytics layer that only reads *already-solved* `.nc` network files. You need to install and run the actual [AGGM-AG/pypsa-at](https://github.com/AGGM-AG/pypsa-at) model first to produce those files - see [Prerequisite](#-prerequisite-run-pypsa-at-first) below before anything here will work.
 
----
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:0f2027,100:1E88E5&height=50&section=header" width="100%"/>
 
 ## 📊 Visual Gallery (PyPSA-AT Mission Control Dashboard)
+
+<div align="center">
+
+![Screens](https://img.shields.io/badge/Screens-22-1E88E5?style=flat-square&logo=googlephotos&logoColor=white)
+![Domains](https://img.shields.io/badge/Functional_Domains-8-22C55E?style=flat-square&logo=windowsterminal&logoColor=white)
+![Engine](https://img.shields.io/badge/Rendered_With-Streamlit-FF4B4B?style=flat-square&logo=streamlit&logoColor=white)
+
+</div>
 
 > **Showing what's here:** This gallery presents the complete PyPSA-AT interactive analytics workflow — from infrastructure planning and chronological dispatch simulation to grid reliability, nodal electricity markets, battery flexibility analytics, and engineering documentation.
 
@@ -142,9 +148,6 @@
 
 ---
 
-
----
-
 ## Table of Contents
 
 - [Prerequisite: Run PyPSA-AT First](#-prerequisite-run-pypsa-at-first)
@@ -159,6 +162,7 @@
 - [Changelog](#-changelog)
 - [Limitations & Future Work](#️-limitations--future-work)
 - [Dependencies](#-dependencies)
+- [Star History](#-star-history)
 
 ---
 
@@ -168,21 +172,14 @@ This platform is a **downstream analytics and provenance layer**. It never runs 
 
 [![PyPSA-AT](https://img.shields.io/badge/Upstream_Model-AGGM--AG%2Fpypsa--at-1E88E5?style=for-the-badge&logo=github&logoColor=white)](https://github.com/AGGM-AG/pypsa-at)
 
-```
-  1. AGGM-AG/pypsa-at            (separate repo, run this first)
-     - clone, configure, solve
-     - Linux, git + pixi required
-              │
-              │ produces
-              ▼
-     results/*.nc
-              │
-              │ copy into this repo's results/
-              ▼
-  2. pypsa-at_analytics          (this repo, starts here)
-     - archive_run.py
-     - extract_runs.py
-     - Streamlit dashboard
+```mermaid
+flowchart TD
+    A["🔧 <b>AGGM-AG/pypsa-at</b><br/><sub>separate repo · run this first</sub><br/>clone → configure → solve<br/><sub>Linux · git + pixi required</sub>"] -->|produces| B[("📉 results/*.nc")]
+    B -->|copy into this repo's results/| C["⚡ <b>pypsa-at_analytics</b><br/><sub>this repo · starts here</sub><br/>archive_run.py → extract_runs.py → Streamlit dashboard"]
+
+    style A fill:#0f2027,stroke:#1E88E5,stroke-width:2px,color:#ffffff
+    style B fill:#1E88E5,stroke:#0f2027,stroke-width:2px,color:#ffffff
+    style C fill:#203a43,stroke:#2c5364,stroke-width:2px,color:#ffffff
 ```
 
 **Step-by-step:**
@@ -215,7 +212,12 @@ This platform solves that **without ever copying or regenerating `.nc` files**, 
 | 📊 **Analytics** - what do the numbers say across runs? | `extract_runs.py` | `data/*.parquet` |
 | 🔀 **Regression** - what changed between two runs? | `diff_configs.py` | printed table / CSV |
 
-**At a glance:** 3 provenance scripts · append-only Parquet lake · 8-tab Streamlit workbench · zero `.nc` duplication.
+**At a glance:**
+
+![Scripts](https://img.shields.io/badge/Provenance_Scripts-3-1E88E5?style=for-the-badge)
+![Storage](https://img.shields.io/badge/Parquet_Lake-Append--Only-22C55E?style=for-the-badge)
+![Tabs](https://img.shields.io/badge/Streamlit_Workbench-8_Tabs-FF4B4B?style=for-the-badge)
+![Duplication](https://img.shields.io/badge/.nc_Duplication-Zero-CB171E?style=for-the-badge)
 
 **Why keep them separate?**
 
@@ -231,43 +233,24 @@ This platform solves that **without ever copying or regenerating `.nc` files**, 
 
 > The top box below is produced entirely by the separate [AGGM-AG/pypsa-at](https://github.com/AGGM-AG/pypsa-at) repo (see [Prerequisite](#-prerequisite-run-pypsa-at-first)). Everything from `results/*.nc` downward is this repo.
 
-```
-┌──────────────────────────────────────────────────────────────────────────┐
-│                        SYSTEM DATA FLOW                                  │
-├──────────────────────────────────────────────────────────────────────────┤
-│                                                                          │
-│   ┌──────────────┐                                                      │
-│   │ PyPSA-AT     │                                                      │
-│   │ solve        │                                                      │
-│   └──────┬───────┘                                                      │
-│          │ writes / overwrites                                         │
-│          ▼                                                              │
-│   ┌──────────────┐                                                      │
-│   │ results/*.nc │ ← ephemeral, single copy on disk                    │
-│   └──────┬───────┘                                                      │
-│          │                                                              │
-│   ┌──────┴───────────────────────────┐                                  │
-│   ▼                                  ▼                                  │
-│ ┌────────────────────┐      ┌─────────────────────┐                     │
-│ │ archive_run.py      │      │ extract_runs.py      │                     │
-│ │ - snapshot config/  │      │ - read results/*.nc  │                     │
-│ │ - fingerprint .nc   │      │ - match by filename  │                     │
-│ │ - record git commit │      │   + size to run_tag  │                     │
-│ └──────────┬──────────┘      └──────────┬──────────┘                     │
-│            │                             │                               │
-│            ▼                             ▼                               │
-│ ┌─────────────────────┐       ┌──────────────────────┐                   │
-│ │ runs/<run_tag>/      │──────▶│ data/*.parquet        │                  │
-│ │  manifest.yaml       │ match │ append, dedup by      │                  │
-│ │  config/*.yaml       │       │ run_tag + scenario    │                  │
-│ └─────────────────────┘       └──────────┬───────────┘                   │
-│                                            │                              │
-│                                            ▼                              │
-│                              ┌──────────────────────────┐                 │
-│                              │  app.py - Streamlit       │                 │
-│                              │  8-tab workbench           │                 │
-│                              └──────────────────────────┘                 │
-└──────────────────────────────────────────────────────────────────────────┘
+```mermaid
+flowchart TD
+    S["⚡ PyPSA-AT Solve"] -->|writes / overwrites| R[("📉 results/*.nc<br/><sub>ephemeral · single copy on disk</sub>")]
+    R --> AR["🧬 archive_run.py<br/><sub>snapshot config/ · fingerprint .nc<br/>record git commit</sub>"]
+    R --> ER["📊 extract_runs.py<br/><sub>read results/*.nc<br/>match by filename + size to run_tag</sub>"]
+    AR --> M[("🗂 runs/&lt;run_tag&gt;/<br/><sub>manifest.yaml · config/*.yaml</sub>")]
+    M -. matched to .-> ER
+    ER --> P[("🪶 data/*.parquet<br/><sub>append · dedup by run_tag + scenario</sub>")]
+    P --> APP["🖥️ app.py<br/><sub>Streamlit · 8-tab workbench</sub>"]
+
+    classDef entry fill:#0f2027,stroke:#1E88E5,color:#fff,stroke-width:2px
+    classDef ephemeral fill:#1E88E5,stroke:#0f2027,color:#fff,stroke-width:2px
+    classDef process fill:#203a43,stroke:#2c5364,color:#fff,stroke-width:2px
+    classDef durable fill:#22C55E,stroke:#0f2027,color:#fff,stroke-width:2px
+    class S entry
+    class R ephemeral
+    class AR,ER,APP process
+    class M,P durable
 ```
 
 ---
@@ -296,10 +279,15 @@ Reads `results/*.nc`, matches each file back to the run that archived it, tags e
 python scripts/extract_runs.py
 ```
 
+```mermaid
+flowchart LR
+    A[("results/*.nc")] --> B{{"matched to run_tag"}} --> C{{"appended"}} --> D[("data/*.parquet")]
+    style A fill:#1E88E5,stroke:#0f2027,color:#fff
+    style D fill:#22C55E,stroke:#0f2027,color:#fff
+    style B fill:#203a43,stroke:#2c5364,color:#fff
+    style C fill:#203a43,stroke:#2c5364,color:#fff
 ```
-results/*.nc ──▶ matched to run_tag ──▶ appended ──▶ data/*.parquet
-                                          (dedup on run_tag + scenario)
-```
+<sub>dedup on `run_tag + scenario`</sub>
 
 > Older runs already in the Parquet store stay untouched even after their `.nc` file is long gone from `results/`.
 
@@ -317,18 +305,14 @@ python scripts/diff_configs.py --base baseline_2025.04 --target high_h2_electrol
 
 ## 📋 Manifest & Store Schema
 
-```
-┌────────────────────┬──────────────────────────────────────────────────────┐
-│ Field               │ Description                                          │
-├────────────────────┼──────────────────────────────────────────────────────┤
-│ run_tag             │ Human-chosen identifier, e.g. "baseline_2025.04"      │
-│ created_at          │ ISO timestamp of the archive_run.py call              │
-│ git_commit          │ SHA of the code state that produced the run           │
-│ notes               │ Free-text description supplied via --notes           │
-│ nc_fingerprints[]   │ filename + byte size (+ optional SHA-256) per .nc     │
-│ config_snapshot     │ Point-in-time copy of config/*.yaml                   │
-└────────────────────┴──────────────────────────────────────────────────────┘
-```
+| Field | Description |
+|---|---|
+| `run_tag` | Human-chosen identifier, e.g. `baseline_2025.04` |
+| `created_at` | ISO timestamp of the `archive_run.py` call |
+| `git_commit` | SHA of the code state that produced the run |
+| `notes` | Free-text description supplied via `--notes` |
+| `nc_fingerprints[]` | filename + byte size (+ optional SHA-256) per `.nc` |
+| `config_snapshot` | Point-in-time copy of `config/*.yaml` |
 
 **Parquet row key:** composite primary key of `run_tag + scenario` - re-running the ETL is idempotent; matching rows are silently upserted rather than duplicated.
 
@@ -357,7 +341,7 @@ The **Scenario Provenance & Report** tab in `app.py` ties everything together:
 
 > Once more than one run has been extracted, scenario names appear as `<scenario> [<run_tag>]` throughout the dashboard, so every tab stays disambiguated automatically.
 
----
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:2c5364,100:1E88E5&height=50&section=header" width="100%"/>
 
 ## 🚀 Quick Start
 
@@ -481,6 +465,24 @@ During active development the Parquet store can accumulate stale test runs. `--r
 
 ## 📋 Changelog
 
+```mermaid
+timeline
+    title Release Timeline
+    v1.0 : Initial Dashboard
+         : Streamlit workbench over single-snapshot Parquet extraction
+         : Baseline capacity share tab
+         : Corridor congestion tab
+    v2.0 : Provenance Layer
+         : archive_run.py — config snapshot + .nc fingerprinting
+         : diff_configs.py — structural YAML deep-diff
+         : extract_runs.py upgraded to run_tag-aware, append-only
+         : Scenario Provenance & Report tab (8 tabs total)
+         : --reset flag for clean re-syncs
+```
+
+<details>
+<summary><b>Full changelog detail</b></summary>
+
 ### v2.0 - Provenance Layer
 - Added `archive_run.py` - config snapshot + `.nc` fingerprinting into `runs/<tag>/`
 - Added `diff_configs.py` - structural YAML deep-diff between two runs
@@ -492,6 +494,8 @@ During active development the Parquet store can accumulate stale test runs. `--r
 ### v1.0 - Initial Dashboard
 - Streamlit workbench over a single-snapshot Parquet extraction of `results/*.nc`
 - Baseline capacity share and corridor congestion analytics tabs
+
+</details>
 
 ---
 
@@ -530,14 +534,25 @@ During active development the Parquet store can accumulate stale test runs. `--r
 
 ---
 
+## 📈 Star History
+
 <div align="center">
 
-<img src="https://capsule-render.vercel.app/api?type=waving&color=0:2c5364,50:203a43,100:0f2027&height=100&section=footer" width="100%"/>
+[![Star History Chart](https://api.star-history.com/svg?repos=AIMLDS7/pypsa-at_analytics&type=Date)](https://star-history.com/#AIMLDS7/pypsa-at_analytics&Date)
+
+</div>
+
+---
+
+<div align="center">
+
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:2c5364,50:203a43,100:0f2027&height=120&section=footer" width="100%"/>
 
 **Built with ⚡ PyPSA · 🐼 Pandas · 📊 Streamlit · 🪶 Apache Parquet**
 
 *Model faster. Track everything.*
 
 [![GitHub](https://img.shields.io/badge/GitHub-AIMLDS7-181717?style=flat-square&logo=github)](https://github.com/AIMLDS7)
+[![Star this repo](https://img.shields.io/badge/⭐-Star_this_repo-FFD700?style=for-the-badge)](https://github.com/AIMLDS7/pypsa-at_analytics/stargazers)
 
 </div>
