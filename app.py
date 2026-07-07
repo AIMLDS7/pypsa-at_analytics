@@ -4,6 +4,16 @@ import numpy as np
 import plotly.express as px
 import plotly.graph_objects as go
 import io
+import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent / "scripts"))
+from manifest_utils import find_runs, load_yaml  # noqa: E402
+from diff_configs import diff_runs, _merge_run_configs  # noqa: E402
+
+REPO_ROOT = Path(__file__).resolve().parent
+RUNS_DIR = REPO_ROOT / "runs"
+
 
 # Configure minimalist enterprise design system
 st.set_page_config(page_title="PyPSA-AT Mission Control Workbench", layout="wide")
@@ -38,6 +48,7 @@ TECHNICAL_GLOSSARY = {
     "Monotonic Duration Curve": "A time-series distribution where all 8,760 annual hours are sorted descending by intensity, allowing immediate visualization of peaking hours vs. base-load conditions."
 }
 
+
 def map_macro_carrier(carrier: str) -> str:
     c_lower = str(carrier).lower()
     if any(k in c_lower for k in ["solar"]): return "Solar PV (All Types)"
@@ -47,33 +58,68 @@ def map_macro_carrier(carrier: str) -> str:
     if any(k in c_lower for k in ["ror", "hydro", "battery", "storage"]): return "Hydro & Storage"
     return "Heat, Synthetic Fuels & Other"
 
+
 def decode_nuts(bus_id: str) -> str:
     for prefix, region in NUTS_MAP.items():
         if str(bus_id).startswith(prefix):
             return f"{bus_id} ({region})"
     return str(bus_id)
 
+
+def _tag_scenario_key(df: pd.DataFrame) -> pd.DataFrame:
+    """Build a collision-safe 'scenario' display key that folds in run_tag,
+    so scenarios coming from different archived config runs (see
+    scripts/archive_run.py) never get silently merged together, even though
+    the underlying results/*.nc file for an old run no longer exists on disk."""
+    if df.empty:
+        return df
+    if "run_tag" not in df.columns:
+        df["run_tag"] = "unarchived"
+    df["run_tag"] = df["run_tag"].fillna("unarchived")
+    n_tags = df["run_tag"].nunique()
+    if n_tags <= 1:
+        return df
+    df = df.copy()
+    df["scenario"] = df["scenario"].astype(str) + "  [" + df["run_tag"].astype(str) + "]"
+    return df
+
+
 @st.cache_data
 def load_data():
-    kpi = pd.read_parquet("data/kpi_summary.parquet").sort_values("scenario")
+    kpi = pd.read_parquet("data/kpi_summary.parquet")
+    kpi = _tag_scenario_key(kpi).sort_values("scenario")
     try: fleet = pd.read_parquet("data/fleet_summary.parquet")
     except FileNotFoundError: fleet = pd.DataFrame()
+    fleet = _tag_scenario_key(fleet)
     dispatch = pd.read_parquet("data/hourly_dispatch.parquet")
+    dispatch = _tag_scenario_key(dispatch)
     try: lines = pd.read_parquet("data/lines_summary.parquet")
     except FileNotFoundError: lines = pd.DataFrame()
+    lines = _tag_scenario_key(lines)
     try: buses = pd.read_parquet("data/buses_summary.parquet")
     except FileNotFoundError: buses = pd.DataFrame()
+    buses = _tag_scenario_key(buses)
     try: soc = pd.read_parquet("data/bess_soc.parquet")
     except FileNotFoundError: soc = pd.DataFrame()
+    soc = _tag_scenario_key(soc)
     try: prices = pd.read_parquet("data/hourly_prices.parquet")
     except FileNotFoundError: prices = pd.DataFrame()
+    prices = _tag_scenario_key(prices)
     return kpi, fleet, dispatch, lines, buses, soc, prices
+
+
+@st.cache_data
+def load_runs_manifest():
+    """All archived run manifests (scripts/archive_run.py), newest first."""
+    return find_runs(RUNS_DIR)
+
 
 def to_excel(df: pd.DataFrame) -> bytes:
     output = io.BytesIO()
     with pd.ExcelWriter(output, engine='openpyxl') as writer:
         df.to_excel(writer, index=False, sheet_name='PyPSA_Export')
     return output.getvalue()
+
 
 kpi_df, fleet_df, dispatch_df, lines_df, buses_df, soc_df, prices_df = load_data()
 
@@ -86,7 +132,7 @@ with st.sidebar:
     st.header("Global Scenario Filter")
     all_scenarios = kpi_df["scenario"].unique().tolist()
     selected_scenarios = st.multiselect("Active Horizons:", options=all_scenarios, default=all_scenarios)
-    
+
     st.divider()
     st.header("View Mode Toggle")
     view_mode = st.radio(
@@ -123,14 +169,15 @@ else:
 # =========================================================
 # 7-TAB MISSION CONTROL CENTER
 # =========================================================
-tab_fleet, tab_dispatch, tab_delta, tab_corridor, tab_nodal, tab_bess, tab_glossary = st.tabs([
+tab_fleet, tab_dispatch, tab_delta, tab_corridor, tab_nodal, tab_bess, tab_report, tab_glossary = st.tabs([
     "1. Infrastructure Fleet ($P_{nom}$ / $S_{nom}$)",
     "2. Chronological Dispatch Stack",
-   r"3. Scenario Delta Engine ($\Delta$)",
+    r"3. Scenario Delta Engine ($\Delta$)",
     "4. Transmission Corridor Audit",
     "5. Smart Nodal Market Explorer",
     "6. BESS State of Charge ($E_t$)",
-    "7. Nomenclature Reference"
+    "7. Scenario Provenance & Report",
+    "8. Nomenclature Reference"
 ])
 
 # ---------------------------------------------------------
@@ -139,7 +186,7 @@ tab_fleet, tab_dispatch, tab_delta, tab_corridor, tab_nodal, tab_bess, tab_gloss
 with tab_fleet:
     st.subheader("Baseline Infrastructure Fleet ($P_{nom}$ Generation & $S_{nom}$ Transmission)")
     st.markdown("Installed asset inventory reflecting physical power plant construction and grid transfer capability.")
-    
+
     t_cols = st.columns(len(selected_scenarios))
     for idx, row in kpi_sub.iterrows():
         with t_cols[selected_scenarios.index(row["scenario"])]:
@@ -158,7 +205,7 @@ with tab_fleet:
         )
         fig_fleet.update_layout(margin=dict(l=0, r=0, t=40, b=0), xaxis_tickangle=-30)
         st.plotly_chart(fig_fleet, use_container_width=True)
-        
+
         e1, e2 = st.columns(2)
         e1.download_button("📊 Download Fleet Data (.xlsx)", to_excel(fleet_sub), "Fleet_Inventory.xlsx", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
         e2.download_button("📄 Download Fleet Data (.csv)", fleet_sub.to_csv(index=False).encode('utf-8'), "Fleet_Inventory.csv", "text/csv")
@@ -179,31 +226,31 @@ with tab_dispatch:
     st.plotly_chart(fig_disp, use_container_width=True)
 
 # ---------------------------------------------------------
-# TAB 3: SCENARIO DELTA ENGINE ($\Delta \text{Target} - \Delta \text{Base}$)
+# TAB 3: SCENARIO DELTA ENGINE
 # ---------------------------------------------------------
 with tab_delta:
     st.subheader(rf"Dynamic Scenario Delta Comparator ($\Delta \text{{Target}} - \Delta \text{{Base}}$) [{view_mode}]")
     st.markdown("Mathematically subtract a baseline transition year from a target scenario to isolate net capacity and generation shifts.")
-    
+
     col_d1, col_d2 = st.columns(2)
     with col_d1:
         base_scen = st.selectbox("Select Baseline Horizon (Base):", options=selected_scenarios, index=0)
     with col_d2:
         target_scen = st.selectbox("Select Target Horizon (Target):", options=selected_scenarios, index=len(selected_scenarios)-1)
-        
+
     base_row = kpi_sub[kpi_sub["scenario"] == base_scen].iloc[0]
     target_row = kpi_sub[kpi_sub["scenario"] == target_scen].iloc[0]
-    
+
     m1, m2, m3 = st.columns(3)
     m1.metric("Δ System Cost", f"€{(target_row['total_system_cost_eur'] - base_row['total_system_cost_eur'])/1e9:+.2f} B", delta=f"vs {base_scen}")
     m2.metric("Δ Annual Generation", f"{(target_row['total_generation_mwh'] - base_row['total_generation_mwh'])/1e6:+.2f} TWh")
     m3.metric("Δ Solar PV Share", f"{(target_row['pv_mwh'] - base_row['pv_mwh'])/1e6:+.2f} TWh")
-    
+
     disp_base = dispatch_sub[dispatch_sub["scenario"] == base_scen].groupby("display_carrier")["dispatch_mw"].sum()
     disp_target = dispatch_sub[dispatch_sub["scenario"] == target_scen].groupby("display_carrier")["dispatch_mw"].sum()
     delta_df = pd.DataFrame({"Base (MWh)": disp_base, "Target (MWh)": disp_target}).fillna(0.0)
     delta_df["Delta (TWh)"] = (delta_df["Target (MWh)"] - delta_df["Base (MWh)"]) / 1e6
-    
+
     fig_delta = px.bar(
         delta_df.reset_index(), x="display_carrier", y="Delta (TWh)", color="Delta (TWh)",
         color_continuous_scale="RdBu", title=f"Net Generation Shift: {target_scen} minus {base_scen}",
@@ -225,11 +272,11 @@ with tab_corridor:
             min_util = 0.0 if show_all_lines else st.slider("Minimum Peak Utilization (%)", 0.0, 100.0, 50.0, 5.0, disabled=show_all_lines)
         with col_c3:
             bus_search = st.text_input("Filter by Substation ID:", placeholder="e.g., DE3, AT0, CZ")
-            
+
         lines_f = lines_sub if show_all_lines else lines_sub[lines_sub["Peak_Utilization_Pct"] >= min_util]
         if bus_search:
             lines_f = lines_f[lines_f["Bus_0"].str.contains(bus_search, case=False) | lines_f["Bus_1"].str.contains(bus_search, case=False)]
-            
+
         st.markdown(f"**Displaying `{len(lines_f):,}` transmission corridors:**")
         fig_lines = px.bar(
             lines_f.head(25), x="Line_ID", y="Peak_Utilization_Pct", color="scenario", barmode="group",
@@ -237,7 +284,7 @@ with tab_corridor:
         )
         fig_lines.add_hline(y=90.0, line_dash="dash", line_color="red", annotation_text="90% N-1 Safety Limit")
         st.plotly_chart(fig_lines, use_container_width=True)
-        
+
         st.markdown("### 📥 Structured Data Export")
         el1, el2 = st.columns(2)
         el1.download_button("📊 Download Corridors (.xlsx)", to_excel(lines_f), "Transmission_Corridors.xlsx", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
@@ -309,7 +356,7 @@ with tab_nodal:
 with tab_bess:
     st.subheader("Battery State of Charge Tracking ($E_t$) & Monotonic Duration Curves")
     sub_soc, sub_pdc = st.tabs(["Continuous Battery Trajectories ($E_t$)", "Monotonic Price Duration Curves (PDCs)"])
-    
+
     with sub_soc:
         if not soc_sub.empty:
             fig_soc = px.line(
@@ -319,13 +366,13 @@ with tab_bess:
             )
             fig_soc.update_layout(margin=dict(l=0, r=0, t=30, b=0), hovermode="x unified")
             st.plotly_chart(fig_soc, use_container_width=True)
-            
+
             eb1, eb2 = st.columns(2)
             eb1.download_button("📊 Download SoC Data (.xlsx)", to_excel(soc_sub), "BESS_SoC.xlsx", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
             eb2.download_button("📄 Download SoC Data (.csv)", soc_sub.to_csv(index=False).encode('utf-8'), "BESS_SoC.csv", "text/csv")
         else:
             st.info("No active storage units detected.")
-            
+
     with sub_pdc:
         if not prices_sub.empty:
             st.markdown("Sorting all 8,760 hourly snapshots descending illustrates structural grid stress duration independent of chronological noise.")
@@ -344,7 +391,189 @@ with tab_bess:
             st.info("No time-series price data extracted.")
 
 # ---------------------------------------------------------
-# TAB 7: NOMENCLATURE REFERENCE
+# TAB 7: SCENARIO PROVENANCE & REPORT
+# ---------------------------------------------------------
+with tab_report:
+    st.subheader("Scenario Provenance & High-Level Report")
+    st.markdown(
+        "Trace which **config/scenario files** produced which results, "
+        "diff two configurations parameter-by-parameter, and read an "
+        "auto-generated narrative comparing their simulated outcomes. "
+        "Runs are created with `python scripts/archive_run.py --tag <name> --notes \"...\"` "
+        "each time you finalize a config + simulation batch."
+    )
+
+    manifests = load_runs_manifest()
+
+    if not manifests:
+        st.warning(
+            "No archived runs found under `runs/`. This tab reads provenance "
+            "snapshots created by `scripts/archive_run.py`, which copies your "
+            "`config/*.yaml` files (not the large `.nc` results) into "
+            "`runs/<tag>/` together with a manifest.\n\n"
+            "**To get started:**\n"
+            "```bash\n"
+            "python scripts/archive_run.py --tag baseline --notes \"Initial AT_KN2040 baseline\"\n"
+            "python scripts/extract_runs.py\n"
+            "```\n"
+            "Then change your config, re-run PyPSA-AT, and repeat with a new `--tag` "
+            "(e.g. `high_h2_electrolysis`) to build up a comparable history."
+        )
+    else:
+        run_tags = [m["run_tag"] for m in manifests]
+        manifest_by_tag = {m["run_tag"]: m for m in manifests}
+
+        st.markdown("### 🗂️ Archived Runs")
+        overview_rows = [{
+            "Run Tag": m.get("run_tag"),
+            "Created At": m.get("created_at"),
+            "Git Commit": m.get("git_commit") or "n/a",
+            "Config Files": ", ".join(m.get("config_files", [])),
+            "Linked Networks": ", ".join((m.get("linked_results") or {}).keys()) or "none",
+            "Notes": m.get("notes", ""),
+        } for m in manifests]
+        st.dataframe(pd.DataFrame(overview_rows), use_container_width=True)
+
+        st.divider()
+        st.markdown("### 🔀 Compare Two Runs (Config Diff + Outcome Delta)")
+
+        rc1, rc2 = st.columns(2)
+        with rc1:
+            base_tag = st.selectbox("Baseline Run:", options=run_tags, index=min(1, len(run_tags) - 1) if len(run_tags) > 1 else 0)
+        with rc2:
+            target_tag = st.selectbox("Target (Modified) Run:", options=run_tags, index=0)
+
+        if base_tag == target_tag:
+            st.info("Select two different runs to compare.")
+        else:
+            base_manifest = manifest_by_tag[base_tag]
+            target_manifest = manifest_by_tag[target_tag]
+
+            nc1, nc2 = st.columns(2)
+            with nc1:
+                st.markdown(f"**Baseline: `{base_tag}`**")
+                st.caption(base_manifest.get("notes") or "_(no notes recorded)_")
+            with nc2:
+                st.markdown(f"**Target: `{target_tag}`**")
+                st.caption(target_manifest.get("notes") or "_(no notes recorded)_")
+
+            # ---- Config diff (the objective "what changed") ----
+            st.markdown("#### ⚙️ Configuration Differences")
+            try:
+                diff_df = diff_runs(base_tag, target_tag)
+            except Exception as e:
+                diff_df = pd.DataFrame()
+                st.error(f"Could not diff configs: {e}")
+
+            if diff_df.empty:
+                st.success("No configuration differences detected between these two runs.")
+            else:
+                st.markdown(f"**`{len(diff_df)}` parameter(s) changed:**")
+                st.dataframe(diff_df, use_container_width=True)
+                rd1, rd2 = st.columns(2)
+                rd1.download_button("📊 Download Config Diff (.xlsx)", to_excel(diff_df),
+                                     f"Config_Diff_{base_tag}_vs_{target_tag}.xlsx",
+                                     "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+                rd2.download_button("📄 Download Config Diff (.csv)", diff_df.to_csv(index=False).encode("utf-8"),
+                                     f"Config_Diff_{base_tag}_vs_{target_tag}.csv", "text/csv")
+
+            # ---- Outcome delta (map run_tag -> scenarios present in KPI table) ----
+            st.markdown("#### 📈 Simulated Outcome Delta")
+            kpi_base = kpi_df[kpi_df["run_tag"] == base_tag] if "run_tag" in kpi_df.columns else pd.DataFrame()
+            kpi_target = kpi_df[kpi_df["run_tag"] == target_tag] if "run_tag" in kpi_df.columns else pd.DataFrame()
+
+            if kpi_base.empty or kpi_target.empty:
+                st.info(
+                    "No extracted KPI telemetry found for one or both of these runs yet. "
+                    "Run `python scripts/extract_runs.py` while `results/*.nc` contains the "
+                    "networks linked to this run's manifest, so its data gets appended to "
+                    "the durable Parquet store (extraction is append + dedup by run_tag, "
+                    "so older runs are preserved even after `results/` gets overwritten)."
+                )
+            else:
+                base_scen_opts = kpi_base["scenario"].unique().tolist()
+                target_scen_opts = kpi_target["scenario"].unique().tolist()
+                sc1, sc2 = st.columns(2)
+                with sc1:
+                    base_scen_pick = st.selectbox("Baseline scenario/horizon:", options=base_scen_opts, key="report_base_scen")
+                with sc2:
+                    target_scen_pick = st.selectbox("Target scenario/horizon:", options=target_scen_opts, key="report_target_scen")
+
+                b_row = kpi_base[kpi_base["scenario"] == base_scen_pick].iloc[0]
+                t_row = kpi_target[kpi_target["scenario"] == target_scen_pick].iloc[0]
+
+                d_cost = t_row["total_system_cost_eur"] - b_row["total_system_cost_eur"]
+                d_gen = t_row["total_generation_mwh"] - b_row["total_generation_mwh"]
+                d_pv = t_row["pv_mwh"] - b_row["pv_mwh"]
+                d_wind = t_row["wind_mwh"] - b_row["wind_mwh"]
+                d_loss = t_row["grid_loss_pct"] - b_row["grid_loss_pct"]
+                d_line_cap = t_row.get("total_ac_line_capacity_mva", 0.0) - b_row.get("total_ac_line_capacity_mva", 0.0)
+                pct_cost = (d_cost / b_row["total_system_cost_eur"] * 100.0) if b_row["total_system_cost_eur"] else np.nan
+
+                m1, m2, m3, m4 = st.columns(4)
+                m1.metric("Δ System Cost", f"€{d_cost/1e9:+.2f} B", delta=f"{pct_cost:+.1f}%")
+                m2.metric("Δ Annual Generation", f"{d_gen/1e6:+.2f} TWh")
+                m3.metric("Δ Solar PV Output", f"{d_pv/1e6:+.2f} TWh")
+                m4.metric("Δ Wind Output", f"{d_wind/1e6:+.2f} TWh")
+
+                # ---- Narrative summary ----
+                st.markdown("#### 📝 Narrative Summary")
+                direction_cost = "increased" if d_cost > 0 else "decreased" if d_cost < 0 else "remained unchanged"
+                direction_gen = "increased" if d_gen > 0 else "decreased" if d_gen < 0 else "remained unchanged"
+                direction_loss = "increased" if d_loss > 0 else "decreased" if d_loss < 0 else "remained unchanged"
+                direction_line = "expanded" if d_line_cap > 0 else "reduced" if d_line_cap < 0 else "left unchanged"
+
+                changed_params_txt = (
+                    ", ".join(f"`{p}`" for p in diff_df["parameter_path"].head(8).tolist())
+                    if not diff_df.empty else "no configuration parameters"
+                )
+
+                narrative = f"""
+Comparing **{base_tag}** (`{base_scen_pick}`) against **{target_tag}** (`{target_scen_pick}`):
+
+- The configuration change modified {len(diff_df)} parameter(s), including {changed_params_txt}{"..." if len(diff_df) > 8 else ""}.
+- Total system cost **{direction_cost}** by **€{abs(d_cost)/1e9:.2f} B** ({pct_cost:+.1f}% relative to baseline).
+- Total annual generation **{direction_gen}** by **{abs(d_gen)/1e6:.2f} TWh**, with Solar PV output shifting by **{d_pv/1e6:+.2f} TWh** and Wind output shifting by **{d_wind/1e6:+.2f} TWh**.
+- Grid loss margin **{direction_loss}** by **{abs(d_loss):.2f} percentage points**.
+- Total high-voltage AC transmission capacity was **{direction_line}** by **{abs(d_line_cap):,.0f} MVA**.
+
+*Rationale (from run notes):* {target_manifest.get('notes') or '_no rationale recorded for the target run — add one via `archive_run.py --notes "..."`_'}
+"""
+                st.markdown(narrative)
+
+                # ---- Supporting comparison chart ----
+                disp_base_r = dispatch_df[(dispatch_df.get("run_tag") == base_tag) & (dispatch_df["scenario"] == base_scen_pick)]
+                disp_target_r = dispatch_df[(dispatch_df.get("run_tag") == target_tag) & (dispatch_df["scenario"] == target_scen_pick)]
+                if not disp_base_r.empty and not disp_target_r.empty:
+                    gb = disp_base_r.groupby("carrier")["dispatch_mw"].sum().rename(base_tag)
+                    gt = disp_target_r.groupby("carrier")["dispatch_mw"].sum().rename(target_tag)
+                    comp = pd.concat([gb, gt], axis=1).fillna(0.0).reset_index()
+                    fig_report = px.bar(
+                        comp.melt(id_vars="carrier", var_name="Run", value_name="Dispatch (MWh)"),
+                        x="carrier", y="Dispatch (MWh)", color="Run", barmode="group",
+                        template="plotly_white", title="Generation Mix Comparison Across Runs"
+                    )
+                    fig_report.update_layout(margin=dict(l=0, r=0, t=40, b=0), xaxis_tickangle=-30)
+                    st.plotly_chart(fig_report, use_container_width=True)
+
+                st.markdown("### 📥 Export Full Report Data")
+                export_df = pd.DataFrame([
+                    {"Metric": "Total System Cost (EUR)", base_tag: b_row["total_system_cost_eur"], target_tag: t_row["total_system_cost_eur"], "Delta": d_cost},
+                    {"Metric": "Total Generation (MWh)", base_tag: b_row["total_generation_mwh"], target_tag: t_row["total_generation_mwh"], "Delta": d_gen},
+                    {"Metric": "Solar PV Output (MWh)", base_tag: b_row["pv_mwh"], target_tag: t_row["pv_mwh"], "Delta": d_pv},
+                    {"Metric": "Wind Output (MWh)", base_tag: b_row["wind_mwh"], target_tag: t_row["wind_mwh"], "Delta": d_wind},
+                    {"Metric": "Grid Loss (%)", base_tag: b_row["grid_loss_pct"], target_tag: t_row["grid_loss_pct"], "Delta": d_loss},
+                    {"Metric": "AC Line Capacity (MVA)", base_tag: b_row.get("total_ac_line_capacity_mva", 0.0), target_tag: t_row.get("total_ac_line_capacity_mva", 0.0), "Delta": d_line_cap},
+                ])
+                rep1, rep2 = st.columns(2)
+                rep1.download_button("📊 Download Report Summary (.xlsx)", to_excel(export_df),
+                                      f"Scenario_Report_{base_tag}_vs_{target_tag}.xlsx",
+                                      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+                rep2.download_button("📄 Download Report Summary (.csv)", export_df.to_csv(index=False).encode("utf-8"),
+                                      f"Scenario_Report_{base_tag}_vs_{target_tag}.csv", "text/csv")
+
+# ---------------------------------------------------------
+# TAB 8: NOMENCLATURE REFERENCE
 # ---------------------------------------------------------
 with tab_glossary:
     st.subheader("Engineering Nomenclature & Telemetry Glossary")
