@@ -19,7 +19,7 @@
 
 </div>
 
-**Provenance-first energy analytics** — every solved PyPSA-AT network is fingerprinted, checkpointed, and appended to a durable Parquet store, so overwriting `results/*.nc` never means losing the ability to compare scenarios.
+**Provenance-first energy analytics** - every solved PyPSA-AT network is fingerprinted, checkpointed, and appended to a durable Parquet store, so overwriting `results/*.nc` never means losing the ability to compare scenarios.
 
 [🏗 Architecture](#-architecture) · [📊 Dashboard](#-dashboard) · [🚀 Quick Start](#-quick-start)
 
@@ -53,15 +53,15 @@
 
 ## 🔭 Overview
 
-Large-scale PyPSA-AT runs solve into `results/*.nc` — and every re-run with a modified config **overwrites** those files. There is only ever *one* `results/base_s_adm__none_2030.nc` on disk at a time. Without extra bookkeeping, once you overwrite it you lose the ability to say *which config produced which numbers*.
+Large-scale PyPSA-AT runs solve into `results/*.nc` - and every re-run with a modified config **overwrites** those files. There is only ever *one* `results/base_s_adm__none_2030.nc` on disk at a time. Without extra bookkeeping, once you overwrite it you lose the ability to say *which config produced which numbers*.
 
 This platform solves that **without ever copying or regenerating `.nc` files**, by splitting the problem into two independent, composable layers:
 
 | Concern | Handled by | Persists to |
 |---|---|---|
-| 🧬 **Provenance** — which config produced this run? | `archive_run.py` | `runs/<run_tag>/manifest.yaml` |
-| 📊 **Analytics** — what do the numbers say across runs? | `extract_runs.py` | `data/*.parquet` |
-| 🔀 **Regression** — what changed between two runs? | `diff_configs.py` | printed table / CSV |
+| 🧬 **Provenance** - which config produced this run? | `archive_run.py` | `runs/<run_tag>/manifest.yaml` |
+| 📊 **Analytics** - what do the numbers say across runs? | `extract_runs.py` | `data/*.parquet` |
+| 🔀 **Regression** - what changed between two runs? | `diff_configs.py` | printed table / CSV |
 
 **At a glance:** 3 provenance scripts · append-only Parquet lake · 8-tab Streamlit workbench · zero `.nc` duplication.
 
@@ -69,8 +69,8 @@ This platform solves that **without ever copying or regenerating `.nc` files**, 
 
 | Scenario | What you'd reach for |
 |---|---|
-| Just solved a run, about to change the config | `archive_run.py --tag <name>` — checkpoint *now* |
-| Want cross-scenario KPI comparisons in the dashboard | `extract_runs.py` — ingest into Parquet |
+| Just solved a run, about to change the config | `archive_run.py --tag <name>` - checkpoint *now* |
+| Want cross-scenario KPI comparisons in the dashboard | `extract_runs.py` - ingest into Parquet |
 | Need to know exactly which parameters changed | `diff_configs.py --base <a> --target <b>` |
 
 ---
@@ -110,7 +110,7 @@ This platform solves that **without ever copying or regenerating `.nc` files**, 
 │                                            │                              │
 │                                            ▼                              │
 │                              ┌──────────────────────────┐                 │
-│                              │  app.py — Streamlit       │                 │
+│                              │  app.py - Streamlit       │                 │
 │                              │  8-tab workbench           │                 │
 │                              └──────────────────────────┘                 │
 └──────────────────────────────────────────────────────────────────────────┘
@@ -120,7 +120,7 @@ This platform solves that **without ever copying or regenerating `.nc` files**, 
 
 ## ⚙️ Pipeline Components
 
-### Component 1 — Provenance Engine (`archive_run.py`)
+### Component 1 - Provenance Engine (`archive_run.py`)
 
 Run this **immediately after a solve completes**, before touching the config again. It snapshots the current `config/*.yaml` into `runs/<tag>/config/` and fingerprints every `results/*.nc` present at that moment.
 
@@ -130,13 +130,13 @@ python scripts/archive_run.py \
     --notes "Initial AT_KN2040 baseline, AT split into 3 admin regions, H2 electrolysis min 1 GW."
 ```
 
-> Fingerprint = filename + byte size, optionally a SHA-256 hash. This is your checkpoint — it's what lets `extract_runs.py` later prove which config produced a given `.nc`.
+> Fingerprint = filename + byte size, optionally a SHA-256 hash. This is your checkpoint - it's what lets `extract_runs.py` later prove which config produced a given `.nc`.
 
 ---
 
-### Component 2 — ETL Engine (`extract_runs.py`)
+### Component 2 - ETL Engine (`extract_runs.py`)
 
-Reads `results/*.nc`, matches each file back to the run that archived it, tags every extracted row with that `run_tag`, and **appends** into the Parquet store — it never overwrites.
+Reads `results/*.nc`, matches each file back to the run that archived it, tags every extracted row with that `run_tag`, and **appends** into the Parquet store - it never overwrites.
 
 ```bash
 python scripts/extract_runs.py
@@ -151,7 +151,7 @@ results/*.nc ──▶ matched to run_tag ──▶ appended ──▶ data/*.pa
 
 ---
 
-### Component 3 — Regression Engine (`diff_configs.py`)
+### Component 3 - Regression Engine (`diff_configs.py`)
 
 Deep-diffs two archived runs' merged config YAMLs into a flat, old-value-vs-new-value table.
 
@@ -176,7 +176,7 @@ python scripts/diff_configs.py --base baseline_2025.04 --target high_h2_electrol
 └────────────────────┴──────────────────────────────────────────────────────┘
 ```
 
-**Parquet row key:** composite primary key of `run_tag + scenario` — re-running the ETL is idempotent; matching rows are silently upserted rather than duplicated.
+**Parquet row key:** composite primary key of `run_tag + scenario` - re-running the ETL is idempotent; matching rows are silently upserted rather than duplicated.
 
 ---
 
@@ -192,7 +192,7 @@ The **Scenario Provenance & Report** tab in `app.py` ties everything together:
 | 📝 Narrative summary | Auto-generated paragraph tying the config change to the outcome |
 | 📤 Export | Excel/CSV of the full comparison |
 
-**Illustrative example** (numbers are placeholders — your dashboard will populate real deltas):
+**Illustrative example** (numbers are placeholders - your dashboard will populate real deltas):
 
 | KPI | `baseline_2025.04` | `high_h2_electrolysis` | Δ |
 |---|---|---|---|
@@ -207,21 +207,21 @@ The **Scenario Provenance & Report** tab in `app.py` ties everything together:
 
 ## 🚀 Quick Start
 
-### 1 — Clone
+### 1 - Clone
 
 ```bash
 git clone https://github.com/AIMLDS7/pypsa-at-analytics.git
 cd pypsa-at-analytics
 ```
 
-### 2 — Install dependencies
+### 2 - Install dependencies
 
 ```bash
 pip install streamlit>=1.30 pandas>=2.0 pyarrow>=14.0 pyyaml>=6.0 \
             gitpython>=3.1 deepdiff>=6.7 xlsxwriter>=3.1
 ```
 
-### 3 — Run the pipeline
+### 3 - Run the pipeline
 
 ```bash
 # a) Solve PyPSA-AT normally -> produces results/*.nc
@@ -234,10 +234,10 @@ python scripts/archive_run.py --tag baseline_2025.04 \
 python scripts/extract_runs.py
 
 # d) Change config/config.at.yaml, re-solve, checkpoint again with a new --tag,
-#    then extract again — both runs now coexist in data/*.parquet
+#    then extract again - both runs now coexist in data/*.parquet
 ```
 
-### 4 — Launch the dashboard
+### 4 - Launch the dashboard
 
 ```bash
 streamlit run app.py
@@ -278,7 +278,7 @@ python scripts/diff_configs.py --base "baseline_2025.04" --target "high_h2_elect
 │       ├── manifest.yaml               ← created_at, git commit, notes, .nc fingerprints
 │       └── config/                     ← snapshot copy of config/*.yaml at archive time
 │
-├── 📉 results/                          ← Solved NetCDF networks (.nc) — OVERWRITTEN each run
+├── 📉 results/                          ← Solved NetCDF networks (.nc) - OVERWRITTEN each run
 ├── 📊 data/                             ← Durable Parquet dashboard store (append-only)
 │
 ├── 🐍 scripts/
@@ -303,13 +303,13 @@ python scripts/diff_configs.py --base "baseline_2025.04" --target "high_h2_elect
 Full SHA-256 hashing of multi-GB `.nc` files on every checkpoint is expensive. Filename + byte size is enough to reliably match a file back to the run that produced it in normal use; the optional SHA-256 is there for when you need cryptographic certainty.
 
 **Why append-only Parquet instead of overwriting the store?**
-`results/*.nc` is already ephemeral — one copy at a time. If the analytics store followed the same pattern, every new run would erase the ability to compare against the previous one. Append-only, deduplicated by `run_tag + scenario`, means old runs stay queryable long after their source `.nc` is gone.
+`results/*.nc` is already ephemeral - one copy at a time. If the analytics store followed the same pattern, every new run would erase the ability to compare against the previous one. Append-only, deduplicated by `run_tag + scenario`, means old runs stay queryable long after their source `.nc` is gone.
 
 **Why `run_tag + scenario` as the composite key, not just `scenario`?**
 Scenario names are often reused across experiments (e.g. `2030` appears in every run). Without `run_tag` in the key, a later run would silently overwrite an earlier one with the same scenario name instead of coexisting alongside it.
 
 **Why tag ungoverned extracts as `unarchived` instead of failing?**
-Forgetting to run `archive_run.py` before extracting shouldn't lose your data — it should just tell you, loudly, that this batch has no config lineage. Rows are ingested and clearly labeled rather than silently dropped or blocking the pipeline.
+Forgetting to run `archive_run.py` before extracting shouldn't lose your data - it should just tell you, loudly, that this batch has no config lineage. Rows are ingested and clearly labeled rather than silently dropped or blocking the pipeline.
 
 **Why offer `--reset` on `extract_runs.py`?**
 During active development the Parquet store can accumulate stale test runs. `--reset` rebuilds it from scratch using only what's currently in `results/`, without needing to manually delete files.
@@ -318,15 +318,15 @@ During active development the Parquet store can accumulate stale test runs. `--r
 
 ## 📋 Changelog
 
-### v2.0 — Provenance Layer
-- Added `archive_run.py` — config snapshot + `.nc` fingerprinting into `runs/<tag>/`
-- Added `diff_configs.py` — structural YAML deep-diff between two runs
+### v2.0 - Provenance Layer
+- Added `archive_run.py` - config snapshot + `.nc` fingerprinting into `runs/<tag>/`
+- Added `diff_configs.py` - structural YAML deep-diff between two runs
 - `extract_runs.py` upgraded to be `run_tag`-aware; **appends** instead of overwriting
 - Added **Scenario Provenance & Report** tab to `app.py` (now 8 tabs total)
 - Dropdown labels across all tabs now disambiguate via `<scenario> [<run_tag>]`
 - Added `--reset` flag to `extract_runs.py` for clean re-syncs during development
 
-### v1.0 — Initial Dashboard
+### v1.0 - Initial Dashboard
 - Streamlit workbench over a single-snapshot Parquet extraction of `results/*.nc`
 - Baseline capacity share and corridor congestion analytics tabs
 
@@ -338,7 +338,7 @@ During active development the Parquet store can accumulate stale test runs. `--r
 
 | Limitation | Impact |
 |---|---|
-| Fingerprint match relies on filename + size by default | Two different `.nc` files that happen to share both could theoretically collide — enable full SHA-256 for strict environments |
+| Fingerprint match relies on filename + size by default | Two different `.nc` files that happen to share both could theoretically collide - enable full SHA-256 for strict environments |
 | No automatic trigger after a solve | `archive_run.py` must be run manually right after each solve, or lineage is lost for that batch |
 | Single-machine Parquet store | Not yet partitioned/distributed for very large numbers of concurrent scenario runs |
 | No built-in run cleanup policy | `runs/` grows unbounded; old manifests must be pruned manually |
