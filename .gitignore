@@ -1,18 +1,20 @@
+# Python cache / bytecode
 __pycache__/
-*.py[cod]
-*$py.class
+*.pyc
+*.pyo
+
+# Virtual environments
 .venv/
 venv/
 env/
-.env
 
-# Ignore large result files
-results/*.nc
-results/
-
-# Editor directories and files
-.idea/
-.vscode/
-*.swp
-*.swo
+# OS junk
 .DS_Store
+Thumbs.db
+
+# Streamlit local state
+.streamlit/secrets.toml
+
+# Editor folders
+.vscode/
+.idea/

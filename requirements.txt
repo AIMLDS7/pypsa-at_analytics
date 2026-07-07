@@ -1,0 +1,9 @@
+pypsa>=0.35
+pandas>=2.0
+numpy
+pyarrow
+plotly>=6.1.1
+streamlit>=1.40
+openpyxl
+pyyaml
+deepdiff
