@@ -1,0 +1,2 @@
+Line_ID,Bus_0,Bus_1,Voltage_kV,Length_km,Nominal_Capacity_MVA,Max_Observed_Flow_MW,Peak_Utilization_Pct,Mean_Utilization_Pct,Congested_Hours,Congestion_Duration_Pct
+122,DE3,DE5,380.0,250.221606405574,29851.639922488124,20221.152542161726,67.73883309147291,42.88392557537984,0,0.0

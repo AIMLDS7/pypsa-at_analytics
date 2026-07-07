@@ -1,0 +1,37 @@
+==========================================================
+         PYPSA-AT BASELINE INFRASTRUCTURE AUDIT
+==========================================================
+
+--- GENERATION PORTFOLIO (MW) ---
+                      Carrier Installed_Capacity_MW Share_Pct
+  unsustainable solid biomass      1,210,117,761.00    74.81%
+         unsustainable biogas        197,406,896.00    12.20%
+     unsustainable bioliquids        188,160,622.00    11.63%
+                solid biomass         13,609,952.43     0.84%
+        municipal solid waste          6,129,554.87     0.38%
+               production gas            683,601.57     0.04%
+                 pipeline gas            469,867.08     0.03%
+                      lng gas            330,669.41     0.02%
+                       onwind            232,936.54     0.01%
+                        solar            164,320.81     0.01%
+                solar rooftop            164,320.81     0.01%
+                          ror             47,291.20     0.00%
+                   offwind-ac             35,402.76     0.00%
+                       biogas             10,666.05     0.00%
+                   offwind-dc                  0.00     0.00%
+                  oil primary                  0.00     0.00%
+                      lignite                  0.00     0.00%
+                         coal                  0.00     0.00%
+                   solar-hsat                  0.00     0.00%
+          rural solar thermal                  0.00     0.00%
+              rural heat vent                  0.00     0.00%
+                      uranium                  0.00     0.00%
+      urban central heat vent                  0.00     0.00%
+  urban central solar thermal                  0.00     0.00%
+    urban decentral heat vent                  0.00     0.00%
+urban decentral solar thermal                  0.00     0.00%
+
+--- TRANSMISSION CORRIDORS (MVA) ---
+Total High-Voltage AC Line Capacity (>=110 kV): 557,932.32 MVA
+Total Substation Transformer Capacity:          0.00 MVA
+==========================================================

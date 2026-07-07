@@ -1,0 +1,237 @@
+PS D:\DARSHIT\PyPSA\Working\pypsa-at-analytics> python scripts/run_expansion_study.py
+WARNING:pypsa.network.io:Importing network from PyPSA version v1.1.2 while current version is v1.2.3. Read the release notes at `https://go.pypsa.org/release-notes` to prepare your network for import.
+INFO:pypsa.network.io:New version 1.2.4 available! (Current: 1.2.3)
+WARNING:pypsa.network.io:Components MultiIndex([( '0', 0),
+            ( '0', 1),
+            ( '0', 2),
+            ( '0', 3),
+            ( '0', 4),
+            ( '0', 5),
+            ( '0', 6),
+            ( '0', 7),
+            ( '0', 8),
+            ( '1', 0),
+            ...
+            ('97', 8),
+            ('98', 0),
+            ('98', 1),
+            ('98', 2),
+            ('98', 3),
+            ('98', 4),
+            ('98', 5),
+            ('98', 6),
+            ('98', 7),
+            ('98', 8)],
+           length=1413) for attribute mu_neg of Line are not in main components dataframe lines
+WARNING:pypsa.network.io:Components MultiIndex([( '0', 0),
+            ( '0', 1),
+            ( '0', 2),
+            ( '0', 3),
+            ( '0', 4),
+            ( '0', 5),
+            ( '0', 6),
+            ( '0', 7),
+            ( '0', 8),
+            ( '1', 0),
+            ...
+            ('97', 8),
+            ('98', 0),
+            ('98', 1),
+            ('98', 2),
+            ('98', 3),
+            ('98', 4),
+            ('98', 5),
+            ('98', 6),
+            ('98', 7),
+            ('98', 8)],
+           length=1413) for attribute mu_pos of Line are not in main components dataframe lines
+INFO:pypsa.network.io:Imported network 'PyPSA-AT Network 2030' has buses, carriers, generators, global_constraints, lines, links, loads, storage_units, stores, sub_networks
+[Auto-Detect] Selected feeding line corridor: '0'
+[Auto-Detect] Selected downstream target bus node: 'GR'
+WARNING:pypsa.network.io:Importing network from PyPSA version v1.1.2 while current version is v1.2.3. Read the release notes at `https://go.pypsa.org/release-notes` to prepare your network for import.
+INFO:pypsa.network.io:New version 1.2.4 available! (Current: 1.2.3)
+WARNING:pypsa.network.io:Components MultiIndex([( '0', 0),
+            ( '0', 1),
+            ( '0', 2),
+            ( '0', 3),
+            ( '0', 4),
+            ( '0', 5),
+            ( '0', 6),
+            ( '0', 7),
+            ( '0', 8),
+            ( '1', 0),
+            ...
+            ('97', 8),
+            ('98', 0),
+            ('98', 1),
+            ('98', 2),
+            ('98', 3),
+            ('98', 4),
+            ('98', 5),
+            ('98', 6),
+            ('98', 7),
+            ('98', 8)],
+           length=1413) for attribute mu_neg of Line are not in main components dataframe lines
+WARNING:pypsa.network.io:Components MultiIndex([( '0', 0),
+            ( '0', 1),
+            ( '0', 2),
+            ( '0', 3),
+            ( '0', 4),
+            ( '0', 5),
+            ( '0', 6),
+            ( '0', 7),
+            ( '0', 8),
+            ( '1', 0),
+            ...
+            ('97', 8),
+            ('98', 0),
+            ('98', 1),
+            ('98', 2),
+            ('98', 3),
+            ('98', 4),
+            ('98', 5),
+            ('98', 6),
+            ('98', 7),
+            ('98', 8)],
+           length=1413) for attribute mu_pos of Line are not in main components dataframe lines
+INFO:pypsa.network.io:Imported network 'PyPSA-AT Network 2030' has buses, carriers, generators, global_constraints, lines, links, loads, storage_units, stores, sub_networks
+INFO:pypsa.consistency:Sanitizing network...
+INFO:pypsa.components._types.carriers:Adding 4 missing carriers: ['H2 CCGT', 'H2 OCGT', 'H2 pipeline (Kernnetz)', 'urban central H2 CHP']
+INFO:pypsa.components._types.carriers:Assigned colors to 4 carriers using 'tab10' palette.
+INFO:pypsa.consistency:Network sanitization complete.
+
+Solving Scenario A: Transmission Co-Optimization along '0'...
+WARNING:pypsa.consistency:The following buses have no attached components, which can break the lopf: {'EU'}
+INFO:linopy.model: Solve problem using Highs solver
+INFO:linopy.io:Writing objective.
+Writing constraints.: 100%|████████████████████████████████████████████████████████████████████████████████████████████████| 40/40 [00:00<00:00, 57.84it/s]
+Writing continuous variables.: 100%|██████████████████████████████████████████████████████████████████████████████████████| 12/12 [00:00<00:00, 131.90it/s]
+INFO:linopy.io: Writing time: 0.96s
+Running HiGHS 1.14.0 (git hash: 7df0786): Copyright (c) 2026 under MIT licence terms
+LP linopy-problem-f1gqxph2 has 851324 rows; 375111 cols; 1879231 nonzeros
+Coefficient ranges:
+  Matrix  [2e-04, 2e+03]
+  Cost    [1e-01, 2e+06]
+  Bound   [1e+00, 3e+04]
+  RHS     [1e-07, 1e+09]
+WARNING: Problem has some excessively large costs
+WARNING: Problem has some excessively small row bounds
+WARNING: Problem has some excessively large row bounds
+WARNING:    Consider scaling the objective by 1e-1, or setting the user_objective_scale option to -1
+WARNING:    Consider scaling the    bounds by 1e-3, or setting the user_bound_scale option to -10
+Presolving model
+Problem status detected on presolve: Infeasible
+Model name          : linopy-problem-f1gqxph2
+Model status        : Infeasible
+Objective value     :  0.0000000000e+00
+HiGHS run time      :          1.21
+WARNING:linopy.constants:Optimization potentially failed:
+Status: warning
+Termination condition: infeasible
+Solution: 0 primals, 0 duals
+Objective: nan
+Solver: highs
+Runtime: 1.21s
+MIP gap: inf
+Dual bound: 0.00e+00
+Solver model: available
+Solver message: Infeasible
+
+WARNING:pypsa.network.io:Importing network from PyPSA version v1.1.2 while current version is v1.2.3. Read the release notes at `https://go.pypsa.org/release-notes` to prepare your network for import.
+INFO:pypsa.network.io:New version 1.2.4 available! (Current: 1.2.3)
+WARNING:pypsa.network.io:Components MultiIndex([( '0', 0),
+            ( '0', 1),
+            ( '0', 2),
+            ( '0', 3),
+            ( '0', 4),
+            ( '0', 5),
+            ( '0', 6),
+            ( '0', 7),
+            ( '0', 8),
+            ( '1', 0),
+            ...
+            ('97', 8),
+            ('98', 0),
+            ('98', 1),
+            ('98', 2),
+            ('98', 3),
+            ('98', 4),
+            ('98', 5),
+            ('98', 6),
+            ('98', 7),
+            ('98', 8)],
+           length=1413) for attribute mu_neg of Line are not in main components dataframe lines
+WARNING:pypsa.network.io:Components MultiIndex([( '0', 0),
+            ( '0', 1),
+            ( '0', 2),
+            ( '0', 3),
+            ( '0', 4),
+            ( '0', 5),
+            ( '0', 6),
+            ( '0', 7),
+            ( '0', 8),
+            ( '1', 0),
+            ...
+            ('97', 8),
+            ('98', 0),
+            ('98', 1),
+            ('98', 2),
+            ('98', 3),
+            ('98', 4),
+            ('98', 5),
+            ('98', 6),
+            ('98', 7),
+            ('98', 8)],
+           length=1413) for attribute mu_pos of Line are not in main components dataframe lines
+INFO:pypsa.network.io:Imported network 'PyPSA-AT Network 2030' has buses, carriers, generators, global_constraints, lines, links, loads, storage_units, stores, sub_networks
+INFO:pypsa.consistency:Sanitizing network...
+INFO:pypsa.components._types.carriers:Adding 4 missing carriers: ['H2 CCGT', 'H2 OCGT', 'H2 pipeline (Kernnetz)', 'urban central H2 CHP']
+INFO:pypsa.components._types.carriers:Assigned colors to 4 carriers using 'tab10' palette.
+INFO:pypsa.consistency:Network sanitization complete.
+Solving Scenario B: Local Generation/Storage Co-Optimization at node 'GR'...
+WARNING:pypsa.consistency:The following buses have no attached components, which can break the lopf: {'EU'}
+INFO:linopy.model: Solve problem using Highs solver
+INFO:linopy.io:Writing objective.
+Writing constraints.: 100%|████████████████████████████████████████████████████████████████████████████████████████████████| 39/39 [00:00<00:00, 56.56it/s]
+Writing continuous variables.: 100%|██████████████████████████████████████████████████████████████████████████████████████| 12/12 [00:00<00:00, 174.81it/s]
+INFO:linopy.io: Writing time: 0.8s
+Running HiGHS 1.14.0 (git hash: 7df0786): Copyright (c) 2026 under MIT licence terms
+LP linopy-problem-3et27udo has 850527 rows; 374385 cols; 1859904 nonzeros
+Coefficient ranges:
+  Matrix  [2e-04, 2e+03]
+  Cost    [3e+00, 2e+06]
+  Bound   [1e+00, 3e+04]
+  RHS     [1e-07, 3e+08]
+WARNING: Problem has some excessively large costs
+WARNING: Problem has some excessively small row bounds
+WARNING: Problem has some excessively large row bounds
+WARNING:    Consider scaling the objective by 1e-1, or setting the user_objective_scale option to -1
+WARNING:    Consider scaling the    bounds by 1e-3, or setting the user_bound_scale option to -9
+Presolving model
+Problem status detected on presolve: Infeasible
+Model name          : linopy-problem-3et27udo
+Model status        : Infeasible
+Objective value     :  0.0000000000e+00
+HiGHS run time      :          1.15
+WARNING:linopy.constants:Optimization potentially failed:
+Status: warning
+Termination condition: infeasible
+Solution: 0 primals, 0 duals
+Objective: nan
+Solver: highs
+Runtime: 1.15s
+MIP gap: inf
+Dual bound: 0.00e+00
+Solver model: available
+Solver message: Infeasible
+
+
+==========================================================
+      CO-OPTIMIZATION INVESTMENT DECISION MATRIX
+==========================================================
+                            Target_Corridor/Node Total_Objective_Cost_EUR Line_Expansion_Added_MVA Local_PV_Added_MW Local_BESS_Added_MWh Cost_Delta_vs_Min_EUR
+Scenario_A_Transmission                        0      €471,452,523,858.58                40.78 MVA           0.00 MW             0.00 MWh                 €0.00
+Scenario_B_Local_Generation                   GR      €471,452,523,858.58                 0.00 MVA           0.01 MW             0.00 MWh                 €0.00
+==========================================================
+
+PS D:\DARSHIT\PyPSA\Working\pypsa-at-analytics>
