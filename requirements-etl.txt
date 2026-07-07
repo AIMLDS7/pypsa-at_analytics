@@ -1,0 +1,6 @@
+# Requirements for LOCAL data extraction / provenance scripts (scripts/*.py).
+# Install this on your machine where you solve PyPSA-AT networks and run
+# extract_runs.py / archive_run.py / diff_configs.py -- NOT needed on
+# Streamlit Cloud, which only serves the pre-extracted Parquet data.
+-r requirements.txt
+pypsa>=0.35

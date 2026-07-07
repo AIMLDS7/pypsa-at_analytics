@@ -1,9 +1,11 @@
-pypsa>=0.35
+# Requirements for the DEPLOYED Streamlit dashboard (app.py) only.
+# app.py never imports pypsa directly -- it only reads pre-extracted
+# data/*.parquet files. Keep this lean for fast Streamlit Cloud builds.
+streamlit>=1.40
 pandas>=2.0
 numpy
 pyarrow
 plotly>=6.1.1
-streamlit>=1.40
 openpyxl
 pyyaml
 deepdiff
