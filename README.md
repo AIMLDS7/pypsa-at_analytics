@@ -3,7 +3,7 @@
 <img src="https://capsule-render.vercel.app/api?type=waving&color=0:0f2027,50:203a43,100:2c5364&height=200&section=header&text=⚡%20PyPSA-AT%20Analytics&fontSize=38&fontColor=ffffff&fontAlignY=38&desc=Provenance-Tracked%20ETL%20%2B%20Streamlit%20Dashboard%20for%20Macro-Energy%20Simulations&descAlignY=60&descSize=15" width="100%"/>
 
 
-[![Open in GitHub](https://img.shields.io/badge/View_on-GitHub-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/AIMLDS7/pypsa-at-analytics)
+[![Open in GitHub](https://img.shields.io/badge/View_on-GitHub-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/AIMLDS7/pypsa-at_analytics)
 
 <div align="center">
 
@@ -27,9 +27,9 @@
 
 <div align="center">
 
-[![Stars](https://img.shields.io/github/stars/AIMLDS7/pypsa-at-analytics?style=social)](https://github.com/AIMLDS7/pypsa-at-analytics/stargazers)
-[![Forks](https://img.shields.io/github/forks/AIMLDS7/pypsa-at-analytics?style=social)](https://github.com/AIMLDS7/pypsa-at-analytics/network/members)
-[![Last commit](https://img.shields.io/github/last-commit/AIMLDS7/pypsa-at-analytics)](https://github.com/AIMLDS7/pypsa-at-analytics/commits)
+[![Stars](https://img.shields.io/github/stars/AIMLDS7/pypsa-at_analytics?style=social)](https://github.com/AIMLDS7/pypsa-at_analytics/stargazers)
+[![Forks](https://img.shields.io/github/forks/AIMLDS7/pypsa-at_analytics?style=social)](https://github.com/AIMLDS7/pypsa-at_analytics/network/members)
+[![Last commit](https://img.shields.io/github/last-commit/AIMLDS7/pypsa-at_analytics)](https://github.com/AIMLDS7/pypsa-at_analytics/commits)
 
 </div>
 
@@ -210,8 +210,8 @@ The **Scenario Provenance & Report** tab in `app.py` ties everything together:
 ### 1 - Clone
 
 ```bash
-git clone https://github.com/AIMLDS7/pypsa-at-analytics.git
-cd pypsa-at-analytics
+git clone https://github.com/AIMLDS7/pypsa-at_analytics.git
+cd pypsa-at_analytics
 ```
 
 ### 2 - Install dependencies
@@ -267,7 +267,7 @@ python scripts/diff_configs.py --base "baseline_2025.04" --target "high_h2_elect
 ## 📁 Repository Structure
 
 ```
-📦 pypsa-at-analytics/
+📦 pypsa-at_analytics/
 │
 ├── ⚙️ config/                          ← Live config for the NEXT PyPSA-AT run
 │   ├── config.at.yaml
