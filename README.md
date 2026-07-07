@@ -39,6 +39,112 @@
 
 ---
 
+## 📊 Visual Gallery (PyPSA-AT Mission Control Dashboard)
+
+> **Showing what's here:** This gallery presents the complete PyPSA-AT interactive analytics workflow — from infrastructure planning and chronological dispatch simulation to grid reliability, nodal electricity markets, battery flexibility analytics, and engineering documentation.
+
+---
+
+## 1️⃣ Infrastructure Planning & Capacity Expansion
+
+| Baseline Infrastructure Fleet — Macro Aggregation |
+|:---:|
+| ![Baseline Infrastructure Fleet Macro View](screenshots/01_baseline_infrastructure_fleet_macro_view.png) |
+| *High-level generation and transmission asset overview across 2025–2050 scenarios using aggregated energy carrier groups.* |
+
+| Granular Technology Portfolio Analysis |
+|:---:|
+| ![Baseline Infrastructure Fleet Granular View](screenshots/02_baseline_infrastructure_fleet_granular_view.png) |
+| *Detailed carrier-level breakdown of 25+ technologies showing capacity evolution and infrastructure transition pathways.* |
+
+---
+
+## 2️⃣ Chronological Dispatch Stack — Macro System View
+
+| 2025 Baseline Dispatch | 2030 Transition Dispatch |
+|:---:|:---:|
+| ![2025 Macro Dispatch](screenshots/03_chronological_dispatch_stack_macro_2025.png) | ![2030 Macro Dispatch](screenshots/04_chronological_dispatch_stack_macro_2030.png) |
+| *Baseline hourly generation operation profile.* | *Energy transition dispatch evolution with changing technology mix.* |
+
+| 2040 Renewable Expansion | 2050 Net-Zero Scenario |
+|:---:|:---:|
+| ![2040 Macro Dispatch](screenshots/05_chronological_dispatch_stack_macro_2040.png) | ![2050 Macro Dispatch](screenshots/06_chronological_dispatch_stack_macro_2050.png) |
+| *Renewable expansion and flexibility-driven operation.* | *Long-term decarbonized power system dispatch behavior.* |
+
+---
+
+## 3️⃣ Chronological Dispatch Stack — Granular Technology View
+
+| 2025 Detailed Carrier Operation | 2030 Technology Transition |
+|:---:|:---:|
+| ![2025 Granular Dispatch](screenshots/07_chronological_dispatch_stack_granular_2025.png) | ![2030 Granular Dispatch](screenshots/08_chronological_dispatch_stack_granular_2030.png) |
+| *Technology-level dispatch from individual energy carriers.* | *Carrier-specific transition pathway visualization.* |
+
+| 2040 Detailed Technology Mix | 2050 Decarbonized Portfolio |
+|:---:|:---:|
+| ![2040 Granular Dispatch](screenshots/09_chronological_dispatch_stack_granular_2040.png) | ![2050 Granular Dispatch](screenshots/10_chronological_dispatch_stack_granular_2050.png) |
+| *High-resolution renewable integration analysis.* | *Future carrier portfolio under deep decarbonization.* |
+
+---
+
+## 4️⃣ Dynamic Scenario Delta Comparator
+
+| Aggregated Transition Analysis | Technology-Level Transition Mapping |
+|:---:|:---:|
+| ![Scenario Delta Macro](screenshots/11_scenario_delta_comparator_macro_view.png) | ![Scenario Delta Granular](screenshots/12_scenario_delta_comparator_granular_view.png) |
+| *ΔTarget − ΔBase comparison showing system-wide transformation between scenarios.* | *Individual technology expansion and phase-out analysis across transition years.* |
+
+---
+
+## 5️⃣ Transmission Network Reliability Analytics
+
+| Critical Corridor Screening |
+|:---:|
+| ![Transmission Filtered View](screenshots/13_transmission_corridor_audit_filtered_view.png) |
+| *Transmission bottleneck detection using utilization thresholds, peak loading, and N-1 security indicators.* |
+
+| Multi-Horizon Congestion Analysis | Full Network Observability |
+|:---:|:---:|
+| ![Transmission Scenario Comparison](screenshots/14_transmission_corridor_audit_multi_scenario_comparison.png) | ![Transmission Full Network](screenshots/15_transmission_corridor_audit_full_network_view.png) |
+| *Grid loading evolution comparison across future scenarios.* | *Complete corridor database with electrical parameters and export capability.* |
+
+---
+
+## 6️⃣ Smart Nodal Price (LMP) Market Intelligence
+
+| Multi-Carrier Price Diagnostics | AC Grid Regional Market Analysis |
+|:---:|:---:|
+| ![LMP Multi Carrier](screenshots/16_smart_nodal_price_lmp_multi_carrier_diagnostics.png) | ![Grid LMP Analysis](screenshots/17_smart_nodal_price_lmp_grid_carrier_analysis.png) |
+| *Carrier-filtered nodal marginal price and volatility analytics.* | *Regional electricity price behavior across grid locations.* |
+
+| Full Market Observability | Solver Penalty Diagnostics |
+|:---:|:---:|
+| ![Full LMP Explorer](screenshots/18_smart_nodal_price_lmp_full_market_observability.png) | ![Solver Penalty Diagnostics](screenshots/19_smart_nodal_price_solver_penalty_diagnostics.png) |
+| *Unfiltered exploration of all market nodes and energy carriers.* | *Raw optimization diagnostics showing penalty prices and constraint effects.* |
+
+---
+
+## 7️⃣ Battery Storage Flexibility Analytics
+
+| Price Duration Curve Diagnostics | Battery State-of-Charge Evolution |
+|:---:|:---:|
+| ![Battery Duration Curve](screenshots/20_battery_soc_price_duration_curve_analysis.png) | ![Battery SOC Tracking](screenshots/21_battery_soc_temporal_trajectory_analysis.png) |
+| *Market stress duration curves identifying flexibility and storage opportunities.* | *Battery energy trajectory analysis across long-term scenarios.* |
+
+---
+
+## 8️⃣ Engineering Documentation Layer
+
+| Engineering Nomenclature & Telemetry Glossary |
+|:---:|
+| ![Engineering Glossary](screenshots/22_engineering_nomenclature_telemetry_glossary.png) |
+| *Integrated PyPSA reference system covering NUTS mapping, LMP concepts, grid metrics, and optimization terminology.* |
+
+---
+
+
+---
+
 ## Table of Contents
 
 - [Prerequisite: Run PyPSA-AT First](#-prerequisite-run-pypsa-at-first)
