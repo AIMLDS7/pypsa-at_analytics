@@ -534,16 +534,6 @@ timeline
 
 ---
 
-## 📈 Star History
-
-<div align="center">
-
-[![Star History Chart](https://api.star-history.com/svg?repos=AIMLDS7/pypsa-at_analytics&type=Date&v=1)](https://star-history.com/#AIMLDS7/pypsa-at_analytics&Date)
-
-</div>
-
----
-
 <div align="center">
 
 <img src="https://capsule-render.vercel.app/api?type=waving&color=0:2c5364,50:203a43,100:0f2027&height=120&section=footer" width="100%"/>
