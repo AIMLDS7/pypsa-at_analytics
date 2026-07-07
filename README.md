@@ -114,7 +114,7 @@
 
 | Multi-Carrier Price Diagnostics | AC Grid Regional Market Analysis |
 |:---:|:---:|
-| ![LMP Multi Carrier](screenshots/16_smart_nodal_price_lmp_multi_carrier_diagnostics.png) | ![Grid LMP Analysis](screenshots/17_smart_nodal_price_lmp_grid_carrier_analysis.png) |
+| ![LMP Multi Carrier](screenshots/16_smart_nodal_price_lmp_diagnostics.png) | ![Grid LMP Analysis](screenshots/17_smart_nodal_price_lmp_grid_carrier_analysis.png) |
 | *Carrier-filtered nodal marginal price and volatility analytics.* | *Regional electricity price behavior across grid locations.* |
 
 | Full Market Observability | Solver Penalty Diagnostics |
