@@ -538,7 +538,7 @@ timeline
 
 <div align="center">
 
-[![Star History Chart](https://api.star-history.com/svg?repos=AIMLDS7/pypsa-at_analytics&type=Date)](https://star-history.com/#AIMLDS7/pypsa-at_analytics&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=AIMLDS7/pypsa-at_analytics&type=Date&v=1)](https://star-history.com/#AIMLDS7/pypsa-at_analytics&Date)
 
 </div>
 
