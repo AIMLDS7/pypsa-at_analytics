@@ -27,10 +27,9 @@
 
 <div align="center">
 
-<!-- Real GitHub-generated badges once the repo is public — replace <your-org> -->
-[![Stars](https://img.shields.io/github/stars/<your-org>/pypsa-at-analytics?style=social)](https://github.com/<your-org>/pypsa-at-analytics/stargazers)
-[![Forks](https://img.shields.io/github/forks/<your-org>/pypsa-at-analytics?style=social)](https://github.com/<your-org>/pypsa-at-analytics/network/members)
-[![Last commit](https://img.shields.io/github/last-commit/<your-org>/pypsa-at-analytics)](https://github.com/<your-org>/pypsa-at-analytics/commits)
+[![Stars](https://img.shields.io/github/stars/AIMLDS7/pypsa-at-analytics?style=social)](https://github.com/AIMLDS7/pypsa-at-analytics/stargazers)
+[![Forks](https://img.shields.io/github/forks/AIMLDS7/pypsa-at-analytics?style=social)](https://github.com/AIMLDS7/pypsa-at-analytics/network/members)
+[![Last commit](https://img.shields.io/github/last-commit/AIMLDS7/pypsa-at-analytics)](https://github.com/AIMLDS7/pypsa-at-analytics/commits)
 
 </div>
 
@@ -211,7 +210,7 @@ The **Scenario Provenance & Report** tab in `app.py` ties everything together:
 ### 1 — Clone
 
 ```bash
-git clone https://github.com/<your-org>/pypsa-at-analytics.git
+git clone https://github.com/AIMLDS7/pypsa-at-analytics.git
 cd pypsa-at-analytics
 ```
 
@@ -376,7 +375,6 @@ During active development the Parquet store can accumulate stale test runs. `--r
 
 *Model faster. Track everything.*
 
-<!-- Replace <your-org> with your actual GitHub namespace -->
-[![GitHub](https://img.shields.io/badge/GitHub-your--org-181717?style=flat-square&logo=github)](https://github.com/<your-org>)
+[![GitHub](https://img.shields.io/badge/GitHub-your--org-181717?style=flat-square&logo=github)](https://github.com/AIMLDS7)
 
 </div>
